@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a1530">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<title>SLALOM KING — Retro World Downhill</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <!-- Boot screen -->
+  <section id="screen-boot" class="screen active">
+    <div class="boot-stack">
+      <div class="logo-mark">
+        <div class="logo-mountain"></div>
+        <h1 class="logo-title">SLALOM<br>KING</h1>
+        <div class="logo-tag">RETRO WORLD DOWNHILL</div>
+      </div>
+      <div class="press-start blink">TRYCK FÖR ATT BÖRJA</div>
+      <div class="boot-credit">v1.0 — 1986/2026</div>
+    </div>
+  </section>
+
+  <!-- Profile screen -->
+  <section id="screen-profile" class="screen">
+    <div class="panel">
+      <div class="panel-title">ÅKARE</div>
+      <div class="profile-current">
+        <div class="profile-label">AKTIV ÅKARE</div>
+        <div id="profile-name" class="profile-name">—</div>
+      </div>
+      <input id="name-input" maxlength="10" placeholder="DITT NAMN" autocomplete="off" spellcheck="false">
+      <button class="btn btn-primary" id="btn-save-name">SPARA NAMN</button>
+      <div class="profile-stats">
+        <div class="stat"><span class="stat-k">TOTAL TID</span><span class="stat-v" id="stat-total">--:--</span></div>
+        <div class="stat"><span class="stat-k">LOPP</span><span class="stat-v" id="stat-runs">0</span></div>
+        <div class="stat"><span class="stat-k">KRASCHER</span><span class="stat-v" id="stat-crashes">0</span></div>
+        <div class="stat"><span class="stat-k">BÄSTA GREN</span><span class="stat-v" id="stat-best">—</span></div>
+      </div>
+      <button class="btn" id="btn-to-menu">TILL BANVAL</button>
+    </div>
+  </section>
+
+  <!-- Menu / track selector -->
+  <section id="screen-menu" class="screen">
+    <header class="menu-head">
+      <div class="menu-greet">HEJ <span id="menu-name">ÅKARE</span></div>
+      <button class="link-btn" id="btn-profile">PROFIL</button>
+    </header>
+    <h2 class="menu-title">VÄLJ BANA</h2>
+    <div id="track-list" class="track-list"></div>
+    <footer class="menu-foot">
+      <button class="link-btn" id="btn-leaderboard">GLOBAL HIGHSCORE</button>
+      <button class="link-btn" id="btn-help">HJÄLP</button>
+    </footer>
+  </section>
+
+  <!-- Leaderboard -->
+  <section id="screen-leaderboard" class="screen">
+    <div class="panel">
+      <div class="panel-title">GLOBAL HIGHSCORE</div>
+      <div class="lb-tabs" id="lb-tabs"></div>
+      <div id="lb-list" class="lb-list"></div>
+      <button class="btn" id="btn-lb-back">TILLBAKA</button>
+    </div>
+  </section>
+
+  <!-- Help -->
+  <section id="screen-help" class="screen">
+    <div class="panel">
+      <div class="panel-title">HJÄLP</div>
+      <div class="help-body">
+        <h3>KONTROLLER</h3>
+        <p><b>Dator:</b> ◀ ▶ styr • ▼ tuck (snabbare) • SPACE paus</p>
+        <p><b>Mobil:</b> Luta vänster/höger, eller tryck på pilarna nere på skärmen. Tryck mitt för tuck.</p>
+        <h3>SYSTEM</h3>
+        <p>★ <b>Grindar:</b> Åk mellan röd och blå för poäng. Missa = +3s straff.</p>
+        <p>★ <b>Checkpoints:</b> Mellantider. Passera dem för bonus.</p>
+        <p>★ <b>Is:</b> Halt — du tappar greppet och sladdar. Räds inte!</p>
+        <p>★ <b>Puder:</b> Bromsar men ger stil-poäng.</p>
+        <p>★ <b>Träd / Sten:</b> Krasch! −3 sekunder. Akta dig.</p>
+        <h3>RANKING</h3>
+        <p>Slutpoäng = bana-tid + grindstraff − bonus. Lägst tid vinner.</p>
+      </div>
+      <button class="btn" id="btn-help-back">TILLBAKA</button>
+    </div>
+  </section>
+
+  <!-- Track briefing -->
+  <section id="screen-briefing" class="screen">
+    <div class="panel briefing-panel">
+      <div id="brief-flag" class="brief-flag"></div>
+      <div class="panel-title" id="brief-name">—</div>
+      <div class="brief-where" id="brief-where">—</div>
+      <div class="brief-grid">
+        <div class="brief-cell"><span>LÄNGD</span><b id="brief-length">—</b></div>
+        <div class="brief-cell"><span>FALL</span><b id="brief-drop">—</b></div>
+        <div class="brief-cell"><span>SVÅR.</span><b id="brief-diff">—</b></div>
+        <div class="brief-cell"><span>YTA</span><b id="brief-surface">—</b></div>
+      </div>
+      <div class="brief-desc" id="brief-desc"></div>
+      <div class="brief-record"><span>BANREKORD</span><b id="brief-record">—</b></div>
+      <div class="brief-row">
+        <button class="btn" id="btn-brief-back">← BANVAL</button>
+        <button class="btn btn-primary" id="btn-brief-start">START!</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Game screen -->
+  <section id="screen-game" class="screen game-screen">
+    <canvas id="game-canvas" width="320" height="480"></canvas>
+    <!-- HUD overlay -->
+    <div class="hud">
+      <div class="hud-row">
+        <div class="hud-block">
+          <div class="hud-k">TID</div>
+          <div class="hud-v" id="hud-time">0:00.00</div>
+        </div>
+        <div class="hud-block">
+          <div class="hud-k">M</div>
+          <div class="hud-v" id="hud-dist">0</div>
+        </div>
+        <div class="hud-block">
+          <div class="hud-k">KM/H</div>
+          <div class="hud-v" id="hud-speed">0</div>
+        </div>
+        <div class="hud-block">
+          <div class="hud-k">GRIND</div>
+          <div class="hud-v" id="hud-gates">0/0</div>
+        </div>
+      </div>
+      <div class="hud-row hud-row-2">
+        <div class="hud-track" id="hud-track">—</div>
+        <div class="hud-flash" id="hud-flash"></div>
+      </div>
+    </div>
+    <!-- Touch controls -->
+    <div class="touch-controls" id="touch-controls">
+      <button class="tc-btn tc-left" data-key="left">◀</button>
+      <button class="tc-btn tc-tuck" data-key="down">▼</button>
+      <button class="tc-btn tc-right" data-key="right">▶</button>
+    </div>
+    <button class="pause-btn" id="btn-pause">II</button>
+  </section>
+
+  <!-- Pause overlay -->
+  <section id="screen-pause" class="screen overlay">
+    <div class="panel">
+      <div class="panel-title">PAUS</div>
+      <button class="btn btn-primary" id="btn-resume">FORTSÄTT</button>
+      <button class="btn" id="btn-restart">STARTA OM</button>
+      <button class="btn" id="btn-quit">AVBRYT LOPP</button>
+    </div>
+  </section>
+
+  <!-- Result screen -->
+  <section id="screen-result" class="screen">
+    <div class="panel">
+      <div class="panel-title" id="result-title">MÅL!</div>
+      <div class="result-time" id="result-time">0:00.00</div>
+      <div class="result-rows">
+        <div class="rr"><span>BANA</span><b id="result-track">—</b></div>
+        <div class="rr"><span>RÅTID</span><b id="result-raw">0:00.00</b></div>
+        <div class="rr"><span>GRINDAR</span><b id="result-gates">0/0</b></div>
+        <div class="rr"><span>STRAFF</span><b id="result-penalty">+0.00</b></div>
+        <div class="rr"><span>STIL-BONUS</span><b id="result-bonus">-0.00</b></div>
+        <div class="rr"><span>KRASCHER</span><b id="result-crashes">0</b></div>
+        <div class="rr"><span>TOPPFART</span><b id="result-topspeed">0 km/h</b></div>
+      </div>
+      <div class="result-rank" id="result-rank">GLOBAL PLACERING: —</div>
+      <div class="result-row">
+        <button class="btn" id="btn-result-menu">BANVAL</button>
+        <button class="btn btn-primary" id="btn-result-replay">EN GÅNG TILL</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="tracks.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
